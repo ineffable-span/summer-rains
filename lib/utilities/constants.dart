@@ -18,3 +18,5 @@ const kButtonTextStyle = TextStyle(
 const kConditionTextStyle = TextStyle(
   fontSize: 100.0,
 );
+
+const kAppId = '77038872edac1411d39eff16a40e18ba';
