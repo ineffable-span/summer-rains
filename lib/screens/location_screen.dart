@@ -2,11 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
 
 class LocationScreen extends StatefulWidget {
+  final dynamic weatherData;
+
+  LocationScreen({this.weatherData});
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+
+  int temperature;
+  String cityName;
+  String suggestion;
+
+  @override
+  void initState() {
+    super.initState();
+    double temp = widget.weatherData['list'][0]['main']['temp'];
+    temperature = temp.toInt();
+    cityName = widget.weatherData['list'][0]['name'];
+    suggestion = widget.weatherData['list'][0]['weather'][0]['description'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,49 +39,56 @@ class _LocationScreenState extends State<LocationScreen> {
         constraints: BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {},
-                    child: Icon(
+              Expanded(
+                child: ListTile(
+                  leading: IconButton(
+                    icon: Icon(
                       Icons.near_me,
-                      size: 50.0,
+                      color: Colors.white,
                     ),
-                  ),
-                  FlatButton(
                     onPressed: () {},
-                    child: Icon(
-                      Icons.location_city,
-                      size: 50.0,
-                    ),
+                    iconSize: 50.0,
                   ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      '32°',
-                      style: kTempTextStyle,
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.location_city,
+                      color: Colors.white,
                     ),
-                    Text(
-                      '☀️',
-                      style: kConditionTextStyle,
-                    ),
-                  ],
+                    onPressed: () {},
+                    iconSize: 50.0,
+                  ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 15.0),
-                child: Text(
-                  "It's 🍦 time in San Francisco!",
-                  textAlign: TextAlign.right,
-                  style: kMessageTextStyle,
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        '$temperature°',
+                        style: kTempTextStyle,
+                      ),
+                      Text(
+                        '☀️',
+                        style: kConditionTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "It's 🍦 time in $cityName!",
+                    textAlign: TextAlign.right,
+                    style: kMessageTextStyle,
+                  ),
                 ),
               ),
             ],
